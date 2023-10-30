@@ -1,4 +1,4 @@
-# Feed2Gram
+# feed2gram
 
 I've joined the [POSSE](https://indieweb.org/POSSE) and publish as much as I can
 to [justin.searls.co](https://justin.searls.co) and syndicate it elsewhere.  I'm
