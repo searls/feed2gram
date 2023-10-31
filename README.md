@@ -82,12 +82,23 @@ directory. This file is used internally by feed2gram to keep track of which
 entry URLs in the atom feed have been processed and can be ignored on the next
 run.
 
+## Docker
+
+You can also use Docker to run this on your own automation platform like Proxmox or Kubernetes.
+
+```
+docker run --rm -it \
+  -v ./feed2gram.yml:/srv/feed2gram.yml \
+  -v ./feed2gram.cache.yml:/srv/feed2gram.cache.yml \
+  ghcr.io/searls/feed2gram
+```
+
 ## Options
 
 For available options, run `feed2gram --help`:
 
 ```
-$ ./script/run --help
+$ ./exe/feed2gram --help
 Usage: feed2gram [options]
   --config PATH        Path of feed2gram YAML configuration (default: feed2gram.yml)
   --cache-path PATH    Path of feed2gram's cache file to track processed entries (default: feed2gram.cache.yml)
