@@ -98,7 +98,7 @@ docker run --rm -it \
 For available options, run `feed2gram --help`:
 
 ```
-$ ./exe/feed2gram --help
+$ bundle exec feed2gram --help
 Usage: feed2gram [options]
   --config PATH        Path of feed2gram YAML configuration (default: feed2gram.yml)
   --cache-path PATH    Path of feed2gram's cache file to track processed entries (default: feed2gram.cache.yml)
