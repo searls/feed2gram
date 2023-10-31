@@ -25,3 +25,32 @@ jobs:
         bundler-cache: true
     - name: Run the default task
       run: bundle exec rake
+
+  docker:
+    runs-on: ubuntu-latest
+    name: Build Docker Container
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: searls
+          password: ${{ secrets.CH_PAT }}
+      - name: Calculate Docker tags
+        id: tags
+        run: |
+          TAGS="ghcr.io/searls/feed2gram:${{ github.event.pull_request.head.sha || github.sha }}"
+          if [ "${{ github.ref_name }}" == "${{ github.event.repository.default_branch }}" ]; then
+            TAGS="$(printf "$TAGS\nghcr.io/searls/feed2gram:latest")"
+          fi
+          echo "tags=$TAGS" >> "$GITHUB_OUTPUT"
+      - uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ steps.tags.outputs.tags }}
