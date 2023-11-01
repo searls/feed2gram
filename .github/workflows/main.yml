@@ -54,8 +54,10 @@ jobs:
           echo "EOTAGS" >> "$GITHUB_OUTPUT"
       - uses: docker/build-push-action@v5
         with:
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           context: .
           platforms: linux/amd64,linux/arm64
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: |
             ${{ steps.tags.outputs.tags }}
