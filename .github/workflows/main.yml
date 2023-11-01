@@ -42,11 +42,16 @@ jobs:
       - name: Calculate Docker tags
         id: tags
         run: |
-          TAGS="ghcr.io/searls/feed2gram:${{ github.event.pull_request.head.sha || github.sha }}"
+          echo "tags<<EOTAGS" >> "$GITHUB_OUTPUT"
+          echo "ghcr.io/searls/feed2gram:${{ github.event.pull_request.head.sha || github.sha }}" >> "$GITHUB_OUTPUT"
           if [ "${{ github.ref_name }}" == "${{ github.event.repository.default_branch }}" ]; then
-            TAGS="$(printf "$TAGS\nghcr.io/searls/feed2gram:latest")"
+            echo "ghcr.io/searls/feed2gram:latest" >> "$GITHUB_OUTPUT"
           fi
-          echo "tags=$TAGS" >> "$GITHUB_OUTPUT"
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            GIT_TAG=${GITHUB_REF#refs/tags/v}
+            echo "ghcr.io/searls/feed2gram:${GIT_TAG}" >> "$GITHUB_OUTPUT"
+          fi
+          echo "EOTAGS" >> "$GITHUB_OUTPUT"
       - uses: docker/build-push-action@v5
         with:
           context: .
