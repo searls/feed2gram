@@ -158,6 +158,32 @@ See more at http://localhost:1313/
 </entry>
 ```
 
+## Running continuously with Docker
+
+We publish a Docker image [using GitHub
+actions](https://github.com/searls/feed2gram/blob/main/.github/workflows/main.yml)
+tagged as `latest` for every new commit to the `main` branch, as well as with a
+release tag tracking every release of the gem on
+[rubygems.org](https://rubygems.org). The images are hosted [here on GitHub's
+container
+registry](https://github.com/searls/feed2gram/pkgs/container/feed2gram)
+
+```
+$ docker pull ghcr.io/searls/feed2gram:latest
+```
+
+To configure your container, there are just three things to know:
+
+1. A volume containing your configuration and cache files must be mounted to `/config`
+2. By default, feed2gram will run with `--config /config/feed2gram.yml`, but you can
+customize this by configuring the command value as needed
+3. By default, feed2gram is run as a daemon every 60 seconds, and that duration can be overridden
+by setting a `SLEEP_TIME` environment variable to the number of seconds you'd like
+to wait between runs
+4. If you'd rather run `feed2gram` as ad hoc as opposed to via the included daemon
+(presumably to handle scheduling it yourself), simply change the entrypoint to
+`/srv/exe/feed2gram`
+
 ## Frequently Asked Questions
 
 ### Why didn't my post show up?
@@ -177,3 +203,4 @@ The submitted image with aspect ratio ('719/194',) cannot be published. Please s
 It means your photo is too avant garde for a mainstream normie platform like
 Instagram. Make sure all images' aspect ratiosa re between 4:5 and 1.91:1 or
 else the post will fail.
+
