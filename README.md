@@ -178,9 +178,26 @@ to wait between runs
 (presumably to handle scheduling it yourself), simply change the entrypoint to
 `/srv/exe/feed2gram`
 
+### Running the docker image specifically on your Synology NAS
 
+I run this on my [Synology DS 920+](https://www.pcmag.com/reviews/synology-diskstation-ds920-plus), using the [DSM's Container Manager](https://www.synology.com/en-global/dsm/feature/container-manager) app.
 
+There are just a few things to know to set this up:
 
+At the time of this writing, the `Action > Import > Add from URL` feature of the Container Manager's
+"Image" tab does not support GitHub Container Registry URLs. However, if you connect [via SSH](https://kb.synology.com/en-my/DSM/tutorial/How_to_login_to_DSM_with_root_permission_via_SSH_Telnet):
+
+```
+$ sudo -s
+# Enter your user password.
+$ docker pull ghcr.io/searls/feed2gram:latest
+```
+
+Once downloaded, the image will appear in the app. From there, select
+`ghcr.io/searls/feed2gram`, hit Run, and complete the wizard, setting any custom
+command line flags (once the container is created, this cannot be edited), as
+well as choosing a location to mount the `/config` volume and setting a
+`SLEEP_TIME` environment variable (these can be changed after the fact).
 
 ## Frequently Asked Questions
 
