@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+echo "Starting feed2gram daemon..."
+exe/feed2gram --verbose "$@"
+while sleep ${SLEEP_TIME:-60} ; do
+  echo "[$(date -R)] Re-running feed2gram..."
+  exe/feed2gram --verbose "$@"
+done
