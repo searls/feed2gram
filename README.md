@@ -82,17 +82,6 @@ directory. This file is used internally by feed2gram to keep track of which
 entry URLs in the atom feed have been processed and can be ignored on the next
 run.
 
-## Docker
-
-You can also use Docker to run this on your own automation platform like Proxmox or Kubernetes.
-
-```
-docker run --rm -it \
-  -v ./feed2gram.yml:/srv/feed2gram.yml \
-  -v ./feed2gram.cache.yml:/srv/feed2gram.cache.yml \
-  ghcr.io/searls/feed2gram
-```
-
 ## Options
 
 For available options, run `feed2gram --help`:
@@ -168,11 +157,16 @@ release tag tracking every release of the gem on
 container
 registry](https://github.com/searls/feed2gram/pkgs/container/feed2gram)
 
+
+You can also use Docker to run this on your own automation platform like Proxmox or Kubernetes.
+
 ```
-$ docker pull ghcr.io/searls/feed2gram:latest
+$ docker run --rm -it \
+  -v ./your_config_dir:/srv/config
+  ghcr.io/searls/feed2gram
 ```
 
-To configure your container, there are just three things to know:
+To configure the container, there are just four things to know:
 
 1. A volume containing your configuration and cache files must be mounted to `/config`
 2. By default, feed2gram will run with `--config /config/feed2gram.yml`, but you can
@@ -183,6 +177,10 @@ to wait between runs
 4. If you'd rather run `feed2gram` as ad hoc as opposed to via the included daemon
 (presumably to handle scheduling it yourself), simply change the entrypoint to
 `/srv/exe/feed2gram`
+
+
+
+
 
 ## Frequently Asked Questions
 
