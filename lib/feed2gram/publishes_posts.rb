@@ -2,13 +2,18 @@ module Feed2Gram
   Result = Struct.new(:post, :status, keyword_init: true)
 
   class PublishesPosts
-    def publish(posts, config, limit)
+    def publish(posts, config, options)
+      post_limit = options.limit || posts.size
+      puts "Publishing #{post_limit} posts to Instagram" if options.verbose
+
       # reverse to post oldest first (most Atom feeds are reverse-chronological)
-      posts.reverse.take(limit || posts.size).map { |post|
+      posts.reverse.take(post_limit).map { |post|
         begin
           if post.images.size == 1
+            puts "Publishing single image post for: #{post.url}" if options.verbose
             publish_single_image(post, config)
           else
+            puts "Publishing carousel post for: #{post.url}" if options.verbose
             publish_carousel(post, config)
           end
         rescue => e

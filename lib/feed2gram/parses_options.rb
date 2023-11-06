@@ -1,7 +1,7 @@
 require "optparse"
 
 module Feed2Gram
-  Options = Struct.new(:config_path, :cache_path, :limit, :skip_token_refresh, :populate_cache, keyword_init: true) do
+  Options = Struct.new(:config_path, :cache_path, :limit, :skip_token_refresh, :populate_cache, :verbose, keyword_init: true) do
     undef_method :cache_path
     def cache_path
       @cache_path || config_path.sub(/\.yml$/, ".cache.yml")
@@ -35,6 +35,10 @@ module Feed2Gram
 
         opts.on "--populate-cache", "Populate the cache file with any posts found in the feed WITHOUT posting them to Instagram" do
           options.populate_cache = true
+        end
+
+        opts.on "-v", "--verbose", "Enable verbose output" do
+          options.verbose = true
         end
       end.parse!(argv)
 

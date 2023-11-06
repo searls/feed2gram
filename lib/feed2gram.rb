@@ -18,16 +18,20 @@ module Feed2Gram
   end
 
   def self.run(options)
-    config = LoadsConfig.new.load(options.config_path)
-    RefreshesToken.new.refresh!(config, options.config_path) unless options.skip_token_refresh
+    config = LoadsConfig.new.load(options)
+    RefreshesToken.new.refresh!(config, options) unless options.skip_token_refresh
 
-    cache = LoadsCache.new.load(options.cache_path)
-    posts = FiltersPosts.new.filter(ParsesEntries.new.parse(config.feed_url), cache)
+    cache = LoadsCache.new.load(options)
+    puts "Loading entries from feed: #{config.feed_url}" if options.verbose
+    entries = ParsesEntries.new.parse(config.feed_url)
+    puts "Found #{entries.size} entries in feed" if options.verbose
+    posts = FiltersPosts.new.filter(entries, cache)
     results = if options.populate_cache
-      posts.map { |post| Result.new(post: post, status: [:skipped, :failed, :posted].sample) }
+      puts "Populating cache, marking #{posts.size} posts as skipped" if options.verbose
+      posts.map { |post| Result.new(post: post, status: :skipped) }
     else
-      PublishesPosts.new.publish(posts, config, options.limit)
+      PublishesPosts.new.publish(posts, config, options)
     end
-    UpdatesCache.new.update!(cache, results, options.cache_path)
+    UpdatesCache.new.update!(cache, results, options)
   end
 end

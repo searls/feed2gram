@@ -17,8 +17,9 @@ module Feed2Gram
   end
 
   class LoadsConfig
-    def load(config_path)
-      yaml = YAML.load_file(config_path, permitted_classes: [Time])
+    def load(options)
+      puts "Loading config from: #{options.config_path}" if options.verbose
+      yaml = YAML.load_file(options.config_path, permitted_classes: [Time])
       Config.new(**yaml)
     end
   end

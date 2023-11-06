@@ -6,11 +6,13 @@ module Feed2Gram
   end
 
   class LoadsCache
-    def load(cache_path)
-      if File.exist?(cache_path)
-        yaml = YAML.load_file(cache_path, permitted_classes: [Time])
+    def load(options)
+      if File.exist?(options.cache_path)
+        puts "Loading cache from: #{options.cache_path}" if options.verbose
+        yaml = YAML.load_file(options.cache_path, permitted_classes: [Time])
         Cache.new(**yaml)
       else
+        puts "No cache found (looked at '#{options.cache_path}'), initializing a new one" if options.verbose
         Cache.new(posted: [], failed: [], skipped: [])
       end
     end
