@@ -9,4 +9,6 @@ COPY Gemfile Gemfile.lock feed2gram.gemspec .
 COPY lib/feed2gram/version.rb lib/feed2gram/
 RUN bundle install
 ADD . .
+VOLUME /config
+CMD ["--verbose", "--config", "/config/feed2gram.yml"]
 ENTRYPOINT ["/srv/exe/feed2gram"]
