@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    feed2gram (0.0.2)
+    feed2gram (0.0.3)
       nokogiri (~> 1.15)
 
 GEM
