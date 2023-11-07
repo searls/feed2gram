@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.0.4]
+
+* Optimize the size of the Docker image (about 85% reduction)
+
 ## [0.0.3]
 
 * Fix the `--populate-cache` so that all entries are marked `skipped`
