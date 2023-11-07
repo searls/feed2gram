@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - 'v*'
 
   pull_request:
 
@@ -48,8 +50,10 @@ jobs:
             echo "ghcr.io/searls/feed2gram:latest" >> "$GITHUB_OUTPUT"
           fi
           if [[ $GITHUB_REF == refs/tags/* ]]; then
-            GIT_TAG=${GITHUB_REF#refs/tags/v}
-            echo "ghcr.io/searls/feed2gram:${GIT_TAG}" >> "$GITHUB_OUTPUT"
+            # assume that any tag is also going to be the 'latest' version
+            # if you push tags out of order (backport fixes), this might not apply. ymmv
+            echo "ghcr.io/searls/feed2gram:latest" >> "$GITHUB_OUTPUT"
+            echo "ghcr.io/searls/feed2gram:${GITHUB_REF#refs/tags/v}" >> "$GITHUB_OUTPUT"
           fi
           echo "EOTAGS" >> "$GITHUB_OUTPUT"
       - uses: docker/build-push-action@v5
