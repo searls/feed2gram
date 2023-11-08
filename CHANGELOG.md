@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+## [1.0.0]
+
+* Simplify the docker build
+* Call it 1.0
+
 ## [0.0.4]
 
 * Optimize the size of the Docker image (about 85% reduction)
