@@ -104,11 +104,13 @@ Some things to keep in mind:
 
 * If one `<img>` tag is present, a single photo post will be created. If there are more, a [carousel post](https://developers.facebook.com/docs/instagram-api/guides/content-publishing/#carousel-posts) will be created
 * Because Facebook's servers actually _download your image_ as opposed to receiving them as uploads via the API, every `<img>` tag's `src` attribute must be set to a publicly-reachable, fully-qualified URL
-* Images can't be more than 8MB, or else posting will fail
-* Images must be standard-issue JPEGs, or else posting will fail
+* To post videos, stories, or reels, set the `data-media-type` attribute on the `<img>` tag to `video`, `stories`, `reels` (a media type of `image` will be assumed by default if left unspecified). Note that while `image` and `video` media may be interspersed throughout a carousel, each `<figure>` must contain exactly one `<img>` if that image's type is `stories` or `reels`
 * For carousel posts, the aspect ratio of the first image determines the aspect ratio of the rest, so be mindful of how you order the images based on how you want them to appear in the app
 * Only one caption will be published, regardless of whether it's a single photo post or a carousel
 * The caption limit is 2200 characters, so feed2gram will truncate it if necessary
+* The API is pretty strict about media file formats, too, so you may wish to preprocess images and videos to avoid errors in processing:
+  * Images can't be more than 8MB and must be standard-issue JPEGs
+  * Videos are even stricter (best to just [read the docs](https://developers.facebook.com/docs/instagram-api/reference/ig-user/media#creating), including this bit on [reels](https://developers.facebook.com/docs/video-api/guides/reels-publishing))
 
 Here's an example `<entry>` from my blog feed:
 
