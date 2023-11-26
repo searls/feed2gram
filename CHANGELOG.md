@@ -1,4 +1,4 @@
-## [Unreleased]
+## [1.1.0]
 
 * Add support for videos and stories, including:
   * single-video posts (which post as reels), by setting `data-media-type=video`
