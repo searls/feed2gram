@@ -102,15 +102,18 @@ feed2gram uses the first `<figure>` element to generate each Instagram post. Tha
 
 Some things to keep in mind:
 
+* A `<figure>` may specify a `data-post-type` with a value of `reels`, `stories`, or `post` (if unspecified, the type defaults to `post`)
+  * If `data-post-type` is set to `stories` or `reels`, exactly one image or video must be included. If `post`, then multiple (up to ten) images and videos can be included and will publish as a carousel post
+  * Posting stories (i.e. `<figure data-post-type="stories">`) requires a _business_ account, not a creator one (in which case a, "the user is not an Instagram Business," error will be returned)
 * If one `<img>` tag is present, a single photo post will be created. If there are more, a [carousel post](https://developers.facebook.com/docs/instagram-api/guides/content-publishing/#carousel-posts) will be created
 * Because Facebook's servers actually _download your image_ as opposed to receiving them as uploads via the API, every `<img>` tag's `src` attribute must be set to a publicly-reachable, fully-qualified URL
-* To post videos, stories, or reels, set the `data-media-type` attribute on the `<img>` tag to `video`, `stories`, `reels` (a media type of `image` will be assumed by default if left unspecified). Note that while `image` and `video` media may be interspersed throughout a carousel, each `<figure>` must contain exactly one `<img>` if that image's type is `stories` or `reels`
+* To post videos, stories, or reels, set the `data-media-type` attribute on the `<img>` tag to `video` or `image` (a media type of `image` will be assumed by default if left unspecified). Note that while `image` and `video` media may be interspersed throughout a carousel
 * For carousel posts, the aspect ratio of the first image determines the aspect ratio of the rest, so be mindful of how you order the images based on how you want them to appear in the app
 * Only one caption will be published, regardless of whether it's a single photo post or a carousel
 * The caption limit is 2200 characters, so feed2gram will truncate it if necessary
 * The API is pretty strict about media file formats, too, so you may wish to preprocess images and videos to avoid errors in processing:
   * Images can't be more than 8MB and must be standard-issue JPEGs
-  * Videos are even stricter (best to just [read the docs](https://developers.facebook.com/docs/instagram-api/reference/ig-user/media#creating), including this bit on [reels](https://developers.facebook.com/docs/video-api/guides/reels-publishing))
+  * Videos are even stricter (best to just [read the docs](https://developers.facebook.com/docs/instagram-api/reference/ig-user/media#creating), including this bit on [reels](https://developers.facebook.com/docs/video-api/guides/reels-publishing)). Videos that appear in carousels seem to have additional no-longer-documented restrictions (in my testing, 9:16 videos routinely failed but 16:9, 1:1, 4:3, and 3:4 succeeded)
 
 Here's an example `<entry>` from my blog feed:
 
@@ -209,7 +212,7 @@ Look at your cache file (by default, `feed2gram.cache.yml`) and you should see
 all the Atom feed entry URLs that succeeded, failed, or were (by the `--populate-cache` option) skipped. If you don't see the error in the log, try
 removing the relevant URL from the cache and running `feed2gram` again.
 
-### What are the valid aspect ratios?
+### What are the valid aspect ratios for images?
 
 If you're seeing an embedded API error like this one:
 
@@ -218,6 +221,6 @@ The submitted image with aspect ratio ('719/194',) cannot be published. Please s
 ```
 
 It means your photo is too avant garde for a mainstream normie platform like
-Instagram. Make sure all images' aspect ratiosa re between 4:5 and 1.91:1 or
+Instagram. Make sure all images' aspect ratios are between 4:5 and 1.91:1 or
 else the post will fail.
 
