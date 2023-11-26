@@ -26,12 +26,16 @@ module Feed2Gram
     entries = ParsesEntries.new.parse(config.feed_url)
     puts "Found #{entries.size} entries in feed" if options.verbose
     posts = FiltersPosts.new.filter(entries, cache)
-    results = if options.populate_cache
-      puts "Populating cache, marking #{posts.size} posts as skipped" if options.verbose
-      posts.map { |post| Result.new(post: post, status: :skipped) }
+    if posts.empty?
+      puts "No new posts to publish after filtering already-processed posts in #{options.cache_path}" if options.verbose
     else
-      PublishesPosts.new.publish(posts, config, options)
+      results = if options.populate_cache
+        puts "Populating cache, marking #{posts.size} posts as skipped" if options.verbose
+        posts.map { |post| Result.new(post: post, status: :skipped) }
+      else
+        PublishesPosts.new.publish(posts, config, options)
+      end
+      UpdatesCache.new.update!(cache, results, options)
     end
-    UpdatesCache.new.update!(cache, results, options)
   end
 end
