@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en-us">
+  <id>https://gram.betterwithbecky.com/syndications/grams</id>
+  <title>Beckygram</title>
+  <updated>2024-02-09T12:41:16Z</updated>
+  <author>
+    <name>Becky Searls</name>
+    <email>becky@betterwithbecky.com</email>
+  </author>
+  <link href="https://gram.betterwithbecky.com/" rel="alternate" type="text/html" title="HTML"/>
+  <link href="https://gram.betterwithbecky.com/syndications/grams" rel="self" type="application/atom+xml" title="Grams"/>
+  <category term="Fitness"/>
+  <generator uri="https://rubyonrails.org/" version="0.119.0">
+Ruby on Rails  </generator>
+  <icon>https://gram.betterwithbecky.com/favicon.ico</icon>
+  <logo>https://static-cdn.betterwithbecky.com/assets/logo-fa728624cb9c92f3e052ee6b58a653d8e64fda32.png</logo>
+  <rights>Copyright Build with Becky LLC. All rights reserved.</rights>
+  <subtitle>What you're getting when you get Better with Becky.</subtitle>
+  <entry>
+    <id>https://gram.betterwithbecky.com/posts/1/whatever</id>
+    <title type="text">Test Title</title>
+    <link href="https://gram.betterwithbecky.com/posts/1/whatever" rel="alternate" type="text/html"/>
+    <author>
+      <name>Becky Searls</name>
+      <email>becky@example.com</email>
+    </author>
+    <published>2024-02-04T14:59:00Z</published>
+    <updated>2024-02-09T12:41:16Z</updated>
+    <content type="html"><![CDATA[
+      <figure data-post-type="post">
+        <img data-media-type="video" data-cover-url="https://upload.wikimedia.org/wikipedia/commons/7/7c/Aspect_ratio_16_9_example.jpg" src="https://static.videezy.com/system/resources/previews/000/032/359/original/MM008645___BOUNCING_FRUIT_009___1080p___phantom.mp4"/>"
+        <figcaption>
+          Nothing to see here. Just a test post.
+        </figcaption>
+      </figure>
+    ]]></content>
+  </entry>
+</feed>
