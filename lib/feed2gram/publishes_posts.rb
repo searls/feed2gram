@@ -33,6 +33,7 @@ module Feed2Gram
         :media_type => post.media_type,
         :caption => post.caption,
         :access_token => config.access_token,
+        :cover_url => media.cover_url,
         media.video? ? :video_url : :image_url => media.url
       }.compact)[:id]
 
@@ -80,12 +81,14 @@ module Feed2Gram
       Result.new(post: post, status: :posted)
     end
 
+    SECONDS_PER_WAIT = 30
+    MAX_WAIT_ATTEMPTS = 100
     # Good ol' loop-and-sleep. Haven't loop do'd in a while
     def wait_for_media_to_upload!(url, container_id, config, options)
       wait_attempts = 0
       loop do
-        if wait_attempts > 90
-          warn "Giving up waiting for media to upload after waiting 120 seconds: #{url}"
+        if wait_attempts > MAX_WAIT_ATTEMPTS
+          warn "Giving up waiting for media to upload after waiting #{SECONDS_PER_WAIT * MAX_WAIT_ATTEMPTS} seconds: #{url}"
           break
         end
 
@@ -93,12 +96,12 @@ module Feed2Gram
           fields: "status_code",
           access_token: config.access_token
         })
-        puts "Upload status #{res[:status_code]} after #{wait_attempts + 1} check for #{url}" if options.verbose
+        puts "Upload status #{res[:status_code]} after waiting #{wait_attempts * SECONDS_PER_WAIT} seconds for IG to download #{url}" if options.verbose
         if res[:status_code] == "FINISHED"
           break
         elsif res[:status_code] == "IN_PROGRESS"
           wait_attempts += 1
-          sleep 1
+          sleep SECONDS_PER_WAIT
         else
           warn "Unexpected status code (#{res[:status_code]}) uploading: #{url}"
           break

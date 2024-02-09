@@ -2,7 +2,7 @@ require "nokogiri"
 require "open-uri"
 
 module Feed2Gram
-  Media = Struct.new(:media_type, :url, keyword_init: true) do
+  Media = Struct.new(:media_type, :url, :cover_url, keyword_init: true) do
     def video?
       media_type == "VIDEO"
     end
@@ -17,7 +17,8 @@ module Feed2Gram
         medias = html.xpath("//figure[1]/img").map { |img|
           Media.new(
             media_type: (img["data-media-type"] || "image").upcase,
-            url: img["src"]
+            url: img["src"],
+            cover_url: img["data-cover-url"]
           )
         }
 
