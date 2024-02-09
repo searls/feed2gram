@@ -1,3 +1,8 @@
+## [1.2.0]
+
+* Add support for the `cover_url` property for reel posts by way of a
+`data-cover-url` attribute on the `<img>` tag of single-video posts..
+
 ## [1.1.0]
 
 * Add support for videos and stories, including:
