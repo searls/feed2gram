@@ -81,14 +81,14 @@ module Feed2Gram
       Result.new(post: post, status: :posted)
     end
 
-    SECONDS_PER_WAIT = 30
-    MAX_WAIT_ATTEMPTS = 100
+    SECONDS_PER_UPLOAD_CHECK = ENV.fetch("SECONDS_PER_UPLOAD_CHECK") { 30 }
+    MAX_UPLOAD_STATUS_CHECKS = ENV.fetch("MAX_UPLOAD_STATUS_CHECKS") { 100 }
     # Good ol' loop-and-sleep. Haven't loop do'd in a while
     def wait_for_media_to_upload!(url, container_id, config, options)
       wait_attempts = 0
       loop do
-        if wait_attempts > MAX_WAIT_ATTEMPTS
-          warn "Giving up waiting for media to upload after waiting #{SECONDS_PER_WAIT * MAX_WAIT_ATTEMPTS} seconds: #{url}"
+        if wait_attempts > MAX_UPLOAD_STATUS_CHECKS
+          warn "Giving up waiting for media to upload after waiting #{SECONDS_PER_UPLOAD_CHECK * MAX_UPLOAD_STATUS_CHECKS} seconds: #{url}"
           break
         end
 
@@ -96,12 +96,12 @@ module Feed2Gram
           fields: "status_code",
           access_token: config.access_token
         })
-        puts "Upload status #{res[:status_code]} after waiting #{wait_attempts * SECONDS_PER_WAIT} seconds for IG to download #{url}" if options.verbose
+        puts "Upload status #{res[:status_code]} after waiting #{wait_attempts * SECONDS_PER_UPLOAD_CHECK} seconds for IG to download #{url}" if options.verbose
         if res[:status_code] == "FINISHED"
           break
         elsif res[:status_code] == "IN_PROGRESS"
           wait_attempts += 1
-          sleep SECONDS_PER_WAIT
+          sleep SECONDS_PER_UPLOAD_CHECK
         else
           warn "Unexpected status code (#{res[:status_code]}) uploading: #{url}"
           break

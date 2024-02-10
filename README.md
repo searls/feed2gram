@@ -96,6 +96,14 @@ Usage: feed2gram [options]
   --populate-cache     Populate the cache file with any posts found in the feed WITHOUT posting them to Instagram
 ```
 
+## Environment variables
+
+These environment variables can be set to augment the gem's behavior:
+
+* `SECONDS_PER_UPLOAD_CHECK` - when uploading video, feed2gram must wait until
+the [status code](https://tiagogrosso.github.io/instagram-graph-api-lib/enums/CONTAINER_STATUS_CODE.html) on the media indicates it is published. This variable determines how many seconds to wait between each check (defaults to 30 seconds). Shortening this value can lead to hitting one's hourly rate limit
+* `MAX_UPLOAD_STATUS_CHECKS` - how many status checks to perform before giving up on a piece of media and calling the post failed. Unfortunately, Facebook's servers can take anywhere from 15 seconds to 15 hours to download and process even trivially small videos, so GLHF
+
 ## Formatting your Atom feed's HTML
 
 feed2gram uses the first `<figure>` element to generate each Instagram post. That `<figure>` can contain one or more `<img>` tags and one `<figcaption>` tag, which will be used as the post's image(s) and caption, respectively.
