@@ -1,3 +1,7 @@
+## [1.2.1]
+
+* Add `SECONDS_PER_UPLOAD_CHECK` and `MAX_UPLOAD_STATUS_CHECKS` env vars
+
 ## [1.2.0]
 
 * Add support for the `cover_url` property for reel posts by way of a
