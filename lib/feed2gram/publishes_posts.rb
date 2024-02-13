@@ -18,6 +18,7 @@ module Feed2Gram
           end
         rescue => e
           warn "Failed to post #{post.url}: #{e.message}"
+          e.backtrace.join("\n").each_line { |line| warn line }
           Result.new(post: post, status: :failed)
         end
       }
