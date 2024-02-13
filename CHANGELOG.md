@@ -1,3 +1,7 @@
+## [1.2.2]
+
+* Fix integer/string conversion error when env vars from 1.2.1 are set
+
 ## [1.2.1]
 
 * Add `SECONDS_PER_UPLOAD_CHECK` and `MAX_UPLOAD_STATUS_CHECKS` env vars
