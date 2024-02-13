@@ -82,8 +82,8 @@ module Feed2Gram
       Result.new(post: post, status: :posted)
     end
 
-    SECONDS_PER_UPLOAD_CHECK = ENV.fetch("SECONDS_PER_UPLOAD_CHECK") { 30 }
-    MAX_UPLOAD_STATUS_CHECKS = ENV.fetch("MAX_UPLOAD_STATUS_CHECKS") { 100 }
+    SECONDS_PER_UPLOAD_CHECK = ENV.fetch("SECONDS_PER_UPLOAD_CHECK") { 30 }.to_i
+    MAX_UPLOAD_STATUS_CHECKS = ENV.fetch("MAX_UPLOAD_STATUS_CHECKS") { 100 }.to_i
     # Good ol' loop-and-sleep. Haven't loop do'd in a while
     def wait_for_media_to_upload!(url, container_id, config, options)
       wait_attempts = 0
