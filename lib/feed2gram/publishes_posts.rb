@@ -1,7 +1,12 @@
 module Feed2Gram
   Result = Struct.new(:post, :status, keyword_init: true)
+  class FacebookSucksAtDownloadingFilesError < StandardError; end
 
   class PublishesPosts
+    SECONDS_PER_UPLOAD_CHECK = ENV.fetch("SECONDS_PER_UPLOAD_CHECK") { 30 }.to_i
+    MAX_UPLOAD_STATUS_CHECKS = ENV.fetch("MAX_UPLOAD_STATUS_CHECKS") { 100 }.to_i
+    RETRIES_AFTER_UPLOAD_TIMEOUT = ENV.fetch("RETRIES_AFTER_UPLOAD_TIMEOUT") { 5 }.to_i
+
     def publish(posts, config, options)
       post_limit = options.limit || posts.size
       puts "Publishing #{post_limit} posts to Instagram" if options.verbose
@@ -9,12 +14,14 @@ module Feed2Gram
       # reverse to post oldest first (most Atom feeds are reverse-chronological)
       posts.reverse.take(post_limit).map { |post|
         begin
-          if post.medias.size == 1
-            puts "Publishing #{post.media_type.downcase} for: #{post.url}" if options.verbose
-            publish_single_media(post, config, options)
-          else
-            puts "Publishing carousel for: #{post.url}" if options.verbose
-            publish_carousel(post, config, options)
+          retry_if_upload_times_out(RETRIES_AFTER_UPLOAD_TIMEOUT, post, options) do
+            if post.medias.size == 1
+              puts "Publishing #{post.media_type.downcase} for: #{post.url}" if options.verbose
+              publish_single_media(post, config, options)
+            else
+              puts "Publishing carousel for: #{post.url}" if options.verbose
+              publish_carousel(post, config, options)
+            end
           end
         rescue => e
           warn "Failed to post #{post.url}: #{e.message}"
@@ -25,6 +32,18 @@ module Feed2Gram
     end
 
     private
+
+    def retry_if_upload_times_out(times_remaining, post, options, &blk)
+      blk.call
+    rescue FacebookSucksAtDownloadingFilesError
+      if times_remaining > 0
+        puts "Will retry with attempt ##{RETRIES_AFTER_UPLOAD_TIMEOUT - times_remaining + 2} after Facebook failed to download a video without timing out for: #{post.url}" if options.verbose
+        retry_if_upload_times_out(times_remaining - 1, post, options, &blk)
+      else
+        warn "Failed to post #{post.url} after #{RETRIES_AFTER_UPLOAD_TIMEOUT} retries due to Facebook timing out on video downloads"
+        Result.new(post: post, status: :failed)
+      end
+    end
 
     def publish_single_media(post, config, options)
       media = post.medias.first
@@ -82,15 +101,13 @@ module Feed2Gram
       Result.new(post: post, status: :posted)
     end
 
-    SECONDS_PER_UPLOAD_CHECK = ENV.fetch("SECONDS_PER_UPLOAD_CHECK") { 30 }.to_i
-    MAX_UPLOAD_STATUS_CHECKS = ENV.fetch("MAX_UPLOAD_STATUS_CHECKS") { 100 }.to_i
     # Good ol' loop-and-sleep. Haven't loop do'd in a while
     def wait_for_media_to_upload!(url, container_id, config, options)
       wait_attempts = 0
       loop do
         if wait_attempts > MAX_UPLOAD_STATUS_CHECKS
           warn "Giving up waiting for media to upload after waiting #{SECONDS_PER_UPLOAD_CHECK * MAX_UPLOAD_STATUS_CHECKS} seconds: #{url}"
-          break
+          raise FacebookSucksAtDownloadingFilesError
         end
 
         res = Http.get("/#{container_id}", {
