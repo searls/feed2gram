@@ -1,3 +1,7 @@
+## [1.2.3]
+
+* Add a retry option after IG continues to fail to download videos correctly. See `RETRIES_AFTER_UPLOAD_TIMEOUT` (default 5 retries)
+
 ## [1.2.2]
 
 * Fix integer/string conversion error when env vars from 1.2.1 are set
