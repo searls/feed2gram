@@ -1,4 +1,7 @@
-# feed2gram
+# feed2gram - Syndicate your site's photos, videos, and carousels to Instagram
+
+**feed2gram is for automating Instagram posts, for posting to Threads, see
+[feed2thread](https://github.com/searls/feed2thread)**
 
 I've joined the [POSSE](https://indieweb.org/POSSE) and publish as much as I can
 to [justin.searls.co](https://justin.searls.co) and syndicate it elsewhere.  I'm
