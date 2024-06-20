@@ -169,7 +169,7 @@ We publish a Docker image [using GitHub
 actions](https://github.com/searls/feed2gram/blob/main/.github/workflows/main.yml)
 tagged as `latest` for every new commit to the `main` branch, as well as with a
 release tag tracking every release of the gem on
-[rubygems.org](https://rubygems.org). The images are hosted [here on GitHub's
+[rubygems.org](https://rubygems.org/gems/feed2gram). The images are hosted [here on GitHub's
 container
 registry](https://github.com/searls/feed2gram/pkgs/container/feed2gram)
 
