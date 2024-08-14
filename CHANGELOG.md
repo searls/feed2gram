@@ -1,3 +1,8 @@
+## [1.2.4]
+
+* When uploads fail, output a message that includes the error code
+(and the URL to look them up)
+
 ## [1.2.3]
 
 * Add a retry option after IG continues to fail to download videos correctly. See `RETRIES_AFTER_UPLOAD_TIMEOUT` (default 5 retries)
