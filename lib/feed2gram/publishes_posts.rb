@@ -111,7 +111,7 @@ module Feed2Gram
         end
 
         res = Http.get("/#{container_id}", {
-          fields: "status_code",
+          fields: "status_code,status",
           access_token: config.access_token
         })
         puts "Upload status #{res[:status_code]} after waiting #{wait_attempts * SECONDS_PER_UPLOAD_CHECK} seconds for IG to download #{url}" if options.verbose
@@ -121,7 +121,13 @@ module Feed2Gram
           wait_attempts += 1
           sleep SECONDS_PER_UPLOAD_CHECK
         else
-          warn "Unexpected status code (#{res[:status_code]}) uploading: #{url}"
+          warn <<~MSG
+            Unexpected status code (#{res[:status_code]}) uploading: #{url}"
+
+            API sent back this: #{res[:status]}
+
+            Error codes can be looked up here: https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/error-codes/
+          MSG
           break
         end
       end
