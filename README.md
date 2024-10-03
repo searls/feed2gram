@@ -238,3 +238,12 @@ It means your photo is too avant garde for a mainstream normie platform like
 Instagram. Make sure all images' aspect ratios are between 4:5 and 1.91:1 or
 else the post will fail.
 
+### How do I test this thing? It's not allowing any of my videos
+
+The hardest thing about testing this (other than the _everything about it_) is
+that the API is way stricter about video formats than the app is, since the app
+processes them for you. Here are two example videos the API _will accept_ from
+the [official example repo](https://github.com/fbsamples/reels_publishing_apis/tree/main/insta_reels_publishing_api_sample):
+
+* https://static.videezy.com/system/resources/previews/000/014/045/original/30_seconds_digital_clock_display_of_sixteen_segments.mp4
+* https://static.videezy.com/system/resources/previews/000/032/359/original/MM008645___BOUNCING_FRUIT_009___1080p___phantom.mp4
