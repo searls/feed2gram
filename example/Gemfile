@@ -2,5 +2,6 @@ source "https://rubygems.org"
 
 gem "rackup"
 gem "sinatra"
+gem "standard"
 
 gem "feed2gram", path: ".."
