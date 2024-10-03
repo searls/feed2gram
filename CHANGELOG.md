@@ -1,3 +1,8 @@
+## [1.3.0]
+
+* Add undocumented methods for using the gem as an API. I leave figuring out its
+usage as an exercise to the reader
+
 ## [1.2.4]
 
 * When uploads fail, output a message that includes the error code
