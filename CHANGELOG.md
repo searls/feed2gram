@@ -1,3 +1,7 @@
+## [1.4.0]
+
+* Allow up to 20 pieces of media in carousel posts
+
 ## [1.3.0]
 
 * Add undocumented methods for using the gem as an API. I leave figuring out its

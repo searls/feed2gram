@@ -134,7 +134,7 @@ module Feed2Gram
     end
 
     def publish_carousel(post, config, options)
-      media_containers = post.medias.take(10).map { |media|
+      media_containers = post.medias.take(20).map { |media|
         puts "Creating media resource for URL - #{media.url}" if options.verbose
         create_carousel_media_container(media, config)
       }
